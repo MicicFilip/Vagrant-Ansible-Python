@@ -1,0 +1,6 @@
+- name: Create log directory
+  file: path={{ ansible_env.HOME }}/logs state=directory
+
+- name: Install the application
+  command: chdir={{ ansible_env.HOME }}/simple_application /usr/bin/python setup.py develop
+  become: True

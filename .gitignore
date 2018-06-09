@@ -1,3 +1,6 @@
 .vscode
 .vagrant
 *.pyc
+.retry
+dist/
+*.egg-info

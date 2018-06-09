@@ -1,0 +1,31 @@
+- name: Install Supervisor
+  apt: name=supervisor state=present update_cache=yes
+  become: True
+
+- name: Run supervisor service
+  service: name=supervisor state=started
+  become: True
+
+- name: Enable supervisor on startup
+  command: "systemctl enable supervisor"
+  become: True
+
+- name: Copy the supervisor startup file
+  template: src=templates/simple-supervisor.conf dest=/etc/supervisor/conf.d/simple-supervisor.conf
+  become: True
+
+- name: Update supervisorctl
+  command: "supervisorctl update"
+  become: True
+
+- name: Get supervisorctl status
+  command: "supervisorctl status"
+  register: supervisor_output
+  become: True
+
+- name: Debug
+  debug: var=supervisor_output
+
+- name: fail the play if the previous command did not succeed
+  fail: msg="Some of the supervisor services failed to start"
+  when: "'FATAL' in supervisor_output.stdout or 'BACKOFF' in supervisor_output.stdout"
