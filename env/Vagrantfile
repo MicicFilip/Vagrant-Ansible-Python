@@ -1,0 +1,21 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+Vagrant.configure("2") do |config|
+
+    # Use the same key for each machine
+    config.ssh.insert_key = false
+  
+    # Create the Simple Vagrant VM
+    config.vm.define "simplevagrant" do |simplevagrant|
+      simplevagrant.vm.box = "bento/ubuntu-16.04"
+      simplevagrant.vm.synced_folder "..", "/home/vagrant/simple_application"
+  
+      simplevagrant.vm.network "forwarded_port", guest: 80, host: 8080
+
+      simplevagrant.vm.provider "virtualbox" do |vb|
+        # vb.gui = true
+        vb.memory = "8096"
+        vb.cpus = 2
+      end
+    end
+  end

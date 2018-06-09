@@ -1,0 +1,23 @@
+- name: Install nginx
+  apt: name=nginx state=present
+  become: True
+
+- name: Copy the nginx conf file
+  template: src=templates/simple-nginx.conf dest=/etc/nginx/sites-available/simple-nginx.conf
+  become: True
+
+- name: Disable the default website
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  become: True
+
+- name: Enable the application in nginx
+  file: src=/etc/nginx/sites-available/simple-nginx.conf dest=/etc/nginx/sites-enabled/simple-nginx.conf state=link
+  become: True
+
+- name: Reload nginx
+  service: name=nginx state=reloaded
+  become: True
+
+- name: Restart nginx
+  service: name=nginx state=restarted
+  become: True

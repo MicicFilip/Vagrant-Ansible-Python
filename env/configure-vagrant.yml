@@ -1,0 +1,8 @@
+- name: Configure the simple app server
+  hosts: 127.0.0.1
+  user: vagrant
+  roles:
+    - application
+    - common
+    - nginx
+    - supervisor
